@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Courier AI</title>
+</head>
+<body>
+  <h2>Courier AI</h2>
+
+  <input id="q" placeholder="Ask about international couriering" />
+  <button onclick="ask()">Ask</button>
+
+  <p id="a"></p>
+
+  <script>
+    async function ask() {
+      const q = document.getElementById("q").value;
+
+      const res = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q })
+      });
+
+      const data = await res.json();
+      document.getElementById("a").innerText = data.answer;
+    }
+  </script>
+</body>
+</html>
