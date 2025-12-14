@@ -7,7 +7,6 @@ module.exports = async (req, res) => {
   }
 
   const question = req.body?.question;
-
   if (!question) {
     res.status(400).json({ answer: "No question provided." });
     return;
