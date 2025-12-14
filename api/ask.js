@@ -1,4 +1,6 @@
-export default async function handler(req, res) {
+const fetch = require("node-fetch");
+
+module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).json({ answer: "Method not allowed." });
     return;
@@ -41,4 +43,4 @@ export default async function handler(req, res) {
     console.error(err);
     res.status(500).json({ answer: "Something went wrong." });
   }
-}
+};
