@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Courier AI</title>
+  <title>Courier Assistant</title>
 </head>
 <body>
-  <h2>Courier AI</h2>
+  <h2>Courier Assistant</h2>
 
-  <input id="q" placeholder="Ask about international couriering" />
-  <button onclick="ask()">Ask</button>
+  <input id="question" placeholder="Ask about sending parcels overseas">
+  <button onclick="sendQuestion()">Ask</button>
 
-  <p id="a"></p>
+  <p id="response"></p>
 
   <script>
-    async function ask() {
-      const q = document.getElementById("q").value;
+    async function sendQuestion() {
+      const input = document.getElementById("question");
+      const output = document.getElementById("response");
+
+      if (!input.value.trim()) return;
+
+      output.textContent = "Thinking...";
 
       const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q })
+        body: JSON.stringify({ question: input.value })
       });
 
       const data = await res.json();
-      document.getElementById("a").innerText = data.answer;
+      output.textContent = data.answer;
     }
   </script>
 </body>
