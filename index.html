@@ -2,6 +2,11 @@
 <html>
 <head>
   <title>Courier Assistant</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+    #response { margin-top: 20px; white-space: pre-wrap; }
+  </style>
 </head>
 <body>
   <h2>Courier Assistant</h2>
@@ -20,14 +25,19 @@
 
       output.textContent = "Thinking...";
 
-      const res = await fetch("/api/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: input.value })
-      });
+      try {
+        const res = await fetch("/api/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input.value })
+        });
 
-      const data = await res.json();
-      output.textContent = data.answer;
+        const data = await res.json();
+        output.textContent = data.answer;
+
+      } catch (err) {
+        output.textContent = "Something went wrong.";
+      }
     }
   </script>
 </body>
