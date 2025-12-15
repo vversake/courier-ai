@@ -21,13 +21,19 @@ module.exports = async (req, res) => {
     const response = await openrouter.chat.send({
       model: "mistralai/devstral-2512:free",
       messages: [
-        { role: "system", content: "You answer international courier questions clearly and helpfully." },
+        { role: "system", content: "You answer international courier questions clearly." },
         { role: "user", content: question }
       ],
-      temperature: 0.3
+      stream: true
     });
 
-    const answer = response.choices?.[0]?.message?.content || "No answer available.";
+    // Combine all chunks into a single answer
+    let answer = "";
+    for await (const chunk of response) {
+      const content = chunk.choices[0]?.delta?.content;
+      if (content) answer += content;
+    }
+
     res.status(200).json({ answer });
 
   } catch (err) {
