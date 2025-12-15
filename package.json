@@ -1,8 +1,9 @@
 {
   "name": "courier-ai",
   "version": "1.0.0",
-  "type": "commonjs",
+  "main": "index.js",
   "dependencies": {
-    "openai": "^4.8.0"
+    "@openrouter/sdk": "^1.0.0",
+    "dotenv": "^17.0.0"
   }
 }
