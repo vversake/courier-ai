@@ -1,7 +1,8 @@
-const OpenAI = require("openai");
+require("dotenv").config();
+const { OpenRouter } = require("@openrouter/sdk");
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY
 });
 
 module.exports = async (req, res) => {
@@ -10,27 +11,27 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const question = req.body?.question;
+  const { question } = req.body || {};
   if (!question) {
     res.status(400).json({ answer: "No question provided." });
     return;
   }
 
   try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+    const response = await openrouter.chat.send({
+      model: "mistralai/devstral-2512:free",
       messages: [
-        { role: "system", content: "You answer questions about international couriering clearly and accurately." },
+        { role: "system", content: "You answer international courier questions clearly and helpfully." },
         { role: "user", content: question }
       ],
       temperature: 0.3
     });
 
-    const answer = completion?.choices?.[0]?.message?.content || "No answer available.";
+    const answer = response.choices?.[0]?.message?.content || "No answer available.";
     res.status(200).json({ answer });
 
   } catch (err) {
-    console.error(err);
+    console.error("OpenRouter error:", err);
     res.status(500).json({ answer: "Something went wrong." });
   }
 };
